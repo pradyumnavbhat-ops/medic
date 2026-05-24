@@ -39,6 +39,8 @@ export interface Hospitals {
   _createdDate?: Date;
   _updatedDate?: Date;
   /** @wixFieldType text */
+  hospitalType?: string;
+  /** @wixFieldType text */
   hospitalName?: string;
   /** @wixFieldType text */
   description?: string;

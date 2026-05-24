@@ -17,6 +17,7 @@ export default function HospitalsPage() {
   const [selectedSpecialty, setSelectedSpecialty] = useState('all');
   const [hasNext, setHasNext] = useState(false);
   const [skip, setSkip] = useState(0);
+  const [activeTab, setActiveTab] = useState<'all' | 'government' | 'private'>('all');
 
   useEffect(() => {
     loadHospitals();
@@ -61,8 +62,14 @@ export default function HospitalsPage() {
       );
     }
 
+    if (activeTab !== 'all') {
+      filtered = filtered.filter(h => 
+        h.hospitalType?.toLowerCase() === activeTab.toLowerCase()
+      );
+    }
+
     setFilteredHospitals(filtered);
-  }, [searchTerm, selectedCountry, selectedSpecialty, hospitals]);
+  }, [searchTerm, selectedCountry, selectedSpecialty, hospitals, activeTab]);
 
   const countries = Array.from(new Set(hospitals.map(h => h.country).filter(Boolean)));
   const specialties = Array.from(new Set(
@@ -140,6 +147,46 @@ export default function HospitalsPage() {
             </div>
           </div>
         </motion.div>
+
+        {/* Tab Navigation */}
+        <div className="mb-8 flex gap-4 border-b border-frosted-glass-foreground pb-4">
+          <motion.button
+            onClick={() => setActiveTab('all')}
+            className={`font-paragraph font-medium pb-2 transition-all ${
+              activeTab === 'all'
+                ? 'text-neon-teal border-b-2 border-neon-teal'
+                : 'text-foreground/70 hover:text-foreground'
+            }`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            All Hospitals
+          </motion.button>
+          <motion.button
+            onClick={() => setActiveTab('government')}
+            className={`font-paragraph font-medium pb-2 transition-all ${
+              activeTab === 'government'
+                ? 'text-neon-teal border-b-2 border-neon-teal'
+                : 'text-foreground/70 hover:text-foreground'
+            }`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Government Hospitals
+          </motion.button>
+          <motion.button
+            onClick={() => setActiveTab('private')}
+            className={`font-paragraph font-medium pb-2 transition-all ${
+              activeTab === 'private'
+                ? 'text-neon-teal border-b-2 border-neon-teal'
+                : 'text-foreground/70 hover:text-foreground'
+            }`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Private Hospitals
+          </motion.button>
+        </div>
 
         {/* Results Count */}
         <div className="mb-8">
