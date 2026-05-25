@@ -10,6 +10,7 @@ import DoctorDetailPage from '@/components/pages/DoctorDetailPage';
 import TreatmentCostsPage from '@/components/pages/TreatmentCostsPage';
 import PostCarePage from '@/components/pages/PostCarePage';
 import ContactPage from '@/components/pages/ContactPage';
+import PatientLoginPage from '@/components/pages/PatientLoginPage';
 
 // Layout component that includes ScrollToTop
 function Layout() {
@@ -81,6 +82,13 @@ const router = createBrowserRouter([
         element: <ContactPage />,
         routeMetadata: {
           pageIdentifier: 'contact',
+        },
+      },
+      {
+        path: "patient-login",
+        element: <PatientLoginPage />,
+        routeMetadata: {
+          pageIdentifier: 'patient-login',
         },
       },
       {

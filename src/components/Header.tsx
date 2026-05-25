@@ -13,7 +13,8 @@ export default function Header() {
     { path: '/doctors', label: 'Doctors' },
     { path: '/treatment-costs', label: 'Treatment Costs' },
     { path: '/post-care', label: 'Post-Care' },
-    { path: '/contact', label: 'Contact' }
+    { path: '/contact', label: 'Contact' },
+    { path: '/patient-login', label: 'Patient Login' }
   ];
 
   const isActive = (path: string) => location.pathname === path;
