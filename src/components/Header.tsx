@@ -1,30 +1,35 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Shield } from 'lucide-react';
+import { Menu, X, Shield, LogOut } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
   const navLinks = [
-    { path: '/', label: 'Home' },
+    { path: '/home', label: 'Home' },
     { path: '/hospitals', label: 'Hospitals' },
     { path: '/doctors', label: 'Doctors' },
     { path: '/treatment-costs', label: 'Treatment Costs' },
     { path: '/post-care', label: 'Post-Care' },
     { path: '/contact', label: 'Contact' },
-    { path: '/patient-login', label: 'Patient Login' }
   ];
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userEmail');
+    window.location.href = '/login';
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-space-black/80 backdrop-blur-lg border-b border-frosted-glass-foreground">
       <div className="max-w-[120rem] mx-auto px-6 md:px-12 lg:px-20 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link to="/home" className="flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neon-teal to-electric-magenta flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
               <Shield className="w-6 h-6 text-space-black" />
             </div>
@@ -58,16 +63,27 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <Link to="/contact" className="hidden lg:block">
+          {/* CTA Button & Logout */}
+          <div className="hidden lg:flex items-center gap-4">
+            <Link to="/contact">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-6 py-3 bg-neon-teal text-space-black font-heading font-bold rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,255,0.5)]"
+              >
+                Get Started
+              </motion.button>
+            </Link>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-6 py-3 bg-neon-teal text-space-black font-heading font-bold rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,255,0.5)]"
+              onClick={handleLogout}
+              className="px-6 py-3 bg-electric-magenta/20 border border-electric-magenta/50 text-electric-magenta font-heading font-bold rounded-lg transition-all duration-300 hover:bg-electric-magenta/30 flex items-center gap-2"
             >
-              Get Started
+              <LogOut className="w-4 h-4" />
+              Logout
             </motion.button>
-          </Link>
+          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -109,6 +125,16 @@ export default function Header() {
                     Get Started
                   </button>
                 </Link>
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    handleLogout();
+                  }}
+                  className="w-full mt-2 px-6 py-3 bg-electric-magenta/20 border border-electric-magenta/50 text-electric-magenta font-heading font-bold rounded-lg flex items-center justify-center gap-2"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
               </div>
             </motion.nav>
           )}

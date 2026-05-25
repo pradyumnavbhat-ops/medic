@@ -11,84 +11,149 @@ import TreatmentCostsPage from '@/components/pages/TreatmentCostsPage';
 import PostCarePage from '@/components/pages/PostCarePage';
 import ContactPage from '@/components/pages/ContactPage';
 import PatientLoginPage from '@/components/pages/PatientLoginPage';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { useState, useEffect } from 'react';
 
-// Layout component that includes ScrollToTop
+// Protected Route Component
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    // Check if user is logged in (stored in localStorage)
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    setIsAuthenticated(isLoggedIn);
+  }, []);
+
+  if (isAuthenticated === null) {
+    return <div className="min-h-screen bg-space-black" />;
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+}
+
+// Layout component that includes ScrollToTop, Header, and Footer
 function Layout() {
   return (
     <>
       <ScrollToTop />
+      <Header />
       <Outlet />
+      <Footer />
     </>
   );
 }
 
 const router = createBrowserRouter([
   {
+    index: true,
+    element: <PatientLoginPage />,
+    routeMetadata: {
+      pageIdentifier: 'patient-login',
+    },
+  },
+  {
+    path: "/login",
+    element: <PatientLoginPage />,
+    routeMetadata: {
+      pageIdentifier: 'patient-login',
+    },
+  },
+  {
     path: "/",
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
       {
-        index: true,
-        element: <HomePage />,
+        path: "home",
+        element: (
+          <ProtectedRoute>
+            <HomePage />
+          </ProtectedRoute>
+        ),
         routeMetadata: {
           pageIdentifier: 'home',
         },
       },
       {
         path: "hospitals",
-        element: <HospitalsPage />,
+        element: (
+          <ProtectedRoute>
+            <HospitalsPage />
+          </ProtectedRoute>
+        ),
         routeMetadata: {
           pageIdentifier: 'hospitals',
         },
       },
       {
         path: "hospitals/:id",
-        element: <HospitalDetailPage />,
+        element: (
+          <ProtectedRoute>
+            <HospitalDetailPage />
+          </ProtectedRoute>
+        ),
         routeMetadata: {
           pageIdentifier: 'hospital-detail',
         },
       },
       {
         path: "doctors",
-        element: <DoctorsPage />,
+        element: (
+          <ProtectedRoute>
+            <DoctorsPage />
+          </ProtectedRoute>
+        ),
         routeMetadata: {
           pageIdentifier: 'doctors',
         },
       },
       {
         path: "doctors/:id",
-        element: <DoctorDetailPage />,
+        element: (
+          <ProtectedRoute>
+            <DoctorDetailPage />
+          </ProtectedRoute>
+        ),
         routeMetadata: {
           pageIdentifier: 'doctor-detail',
         },
       },
       {
         path: "treatment-costs",
-        element: <TreatmentCostsPage />,
+        element: (
+          <ProtectedRoute>
+            <TreatmentCostsPage />
+          </ProtectedRoute>
+        ),
         routeMetadata: {
           pageIdentifier: 'treatment-costs',
         },
       },
       {
         path: "post-care",
-        element: <PostCarePage />,
+        element: (
+          <ProtectedRoute>
+            <PostCarePage />
+          </ProtectedRoute>
+        ),
         routeMetadata: {
           pageIdentifier: 'post-care',
         },
       },
       {
         path: "contact",
-        element: <ContactPage />,
+        element: (
+          <ProtectedRoute>
+            <ContactPage />
+          </ProtectedRoute>
+        ),
         routeMetadata: {
           pageIdentifier: 'contact',
-        },
-      },
-      {
-        path: "patient-login",
-        element: <PatientLoginPage />,
-        routeMetadata: {
-          pageIdentifier: 'patient-login',
         },
       },
       {
@@ -96,6 +161,10 @@ const router = createBrowserRouter([
         element: <Navigate to="/" replace />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <Navigate to="/" replace />,
   },
 ], {
   basename: import.meta.env.BASE_NAME,
