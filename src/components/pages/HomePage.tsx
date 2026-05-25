@@ -3,8 +3,6 @@ import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { Shield, DollarSign, Users, FileText, ArrowRight, Activity, Globe, Lock, ChevronRight, Database, Cpu } from 'lucide-react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { Image } from '@/components/ui/image';
 
 // --- Canonical Data Sources ---
@@ -91,8 +89,6 @@ export default function HomePage() {
           clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%, 0 20px);
         }
       `}</style>
-
-      <Header />
 
       {/* HERO SECTION - The Terminal */}
       <section ref={heroRef} className="relative w-full min-h-[100vh] flex items-center justify-center pt-20 pb-32 overflow-hidden">
