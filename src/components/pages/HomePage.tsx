@@ -1,8 +1,8 @@
 // HPI 1.7-G
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { Shield, DollarSign, Users, FileText, ArrowRight, Activity, Globe, Lock, ChevronRight, Database, Cpu } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Shield, DollarSign, Users, FileText, ArrowRight, Activity, Globe, ChevronRight, Database, Cpu } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 
 // --- Canonical Data Sources ---
